@@ -24,6 +24,29 @@ services:
     networks:
       - qnap-apps
 
+  jellyfin:  # Free Software Media System
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: qnap-jellyfin
+    hostname: jellyfin
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai
+      - LANG=en_US.UTF-8
+      - PUID=1000
+      - PGID=1000
+      - JELLYFIN_PublishedServerUrl=qnap.liukun.com
+    volumes:  # Should be changed !!!
+      - /share/Container/jellyfin/library:/config
+      - /share/Container/jellyfin/tvseries:/data/tvshows
+      - /share/Public/Media:/data/movies
+    ports:
+      - "8096:8096"
+      - "8920:8920"
+      - "7359:7359/udp"
+      - "1900:1900/udp"
+    networks:
+      - qnap-apps
+
   piwigo:  # Photo Gallery
     image: lscr.io/linuxserver/piwigo:latest
     container_name: qnap-piwigo
