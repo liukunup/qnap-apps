@@ -1,0 +1,25 @@
+version: "3"
+
+networks:
+  qnap-apps:
+    driver: bridge
+
+services:
+
+  portainer:  # Container Management UI
+    image: portainer/portainer-ce:2.15.1
+    container_name: qnap-portainer
+    hostname: portainer
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai
+      - LANG=en_US.UTF-8
+    volumes:
+      - /share/Container/portainer:/data  # Should be changed !!!
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "8000:8000"  # TCP Tunnel (Server)
+      - "9000:9000"  # HTTP
+      - "9443:9443"  # HTTPS
+    networks:
+      - qnap-apps
