@@ -24,6 +24,28 @@ services:
     networks:
       - qnap-apps
 
+  gitea:
+    image: gitea/gitea:1.17.3
+    container_name: qnap-gitea
+    hostname: gitea
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai
+      - LANG=en_US.UTF-8
+      - USER_UID=1000
+      - USER_GID=1000
+    volumes:  # Should be changed !!!
+      - /share/Container/gitea:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "9084:3000"
+      - "10022:22"
+    depends_on:
+      - mysql-main
+    networks:
+      - qnap-apps
+
 # ------------------------------------------------------- Minio -------------------------------------------------------
 
   minio:
