@@ -24,6 +24,40 @@ services:
     networks:
       - qnap-apps
 
+# ------------------------------------------------------ Registry ------------------------------------------------------
+
+  registry-frontend:  # Registry WebUI
+    image: konradkleine/docker-registry-frontend:v2
+    container_name: qnap-registry-web
+    hostname: registry-web
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai
+      - LANG=en_US.UTF-8
+      - ENV_DOCKER_REGISTRY_HOST=registry
+      - ENV_DOCKER_REGISTRY_PORT=5000
+    ports:
+      - "9082:80"
+    depends_on:
+      - registry-backend
+    networks:
+      - qnap-apps
+
+  registry-backend:  # Registry Server
+    image: registry:2
+    container_name: qnap-registry
+    hostname: registry
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai
+      - LANG=en_US.UTF-8
+    volumes:  # Should be changed !!!
+      - /share/Container/registry:/var/lib/registry
+    ports:
+      - "5000:5000"
+    networks:
+      - qnap-apps
+
 # ------------------------------------------------------- MySQL -------------------------------------------------------
 
   phpmyadmin:
