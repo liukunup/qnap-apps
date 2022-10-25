@@ -36,9 +36,6 @@ services:
       - PMA_PORT=3306
     ports:
       - "9080:80"
-    links:
-      - mysql-main
-      - mysql-replica
     depends_on:
       - mysql-main
       - mysql-replica
@@ -46,8 +43,8 @@ services:
       - qnap-apps
 
   mysql-main:
-    container_name: qnap-mysql-main
     image: mysql:8
+    container_name: qnap-mysql-main
     hostname: mysql-main
     restart: always
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --server-id=100
@@ -62,8 +59,8 @@ services:
       - qnap-apps
 
   mysql-replica:
-    container_name: qnap-mysql-replica
     image: mysql:8
+    container_name: qnap-mysql-replica
     hostname: mysql-replica
     restart: always
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --server-id=101
