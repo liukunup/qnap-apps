@@ -23,3 +23,56 @@ services:
       - "9443:9443"  # HTTPS
     networks:
       - qnap-apps
+
+# ------------------------------------------------------- MySQL -------------------------------------------------------
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:5.2
+    container_name: qnap-phpmyadmin
+    hostname: phpmyadmin
+    restart: always
+    environment:
+      - PMA_HOSTS=mysql-main,mysql-replica
+      - PMA_PORT=3306
+    ports:
+      - "9080:80"
+    links:
+      - mysql-main
+      - mysql-replica
+    depends_on:
+      - mysql-main
+      - mysql-replica
+    networks:
+      - qnap-apps
+
+  mysql-main:
+    container_name: qnap-mysql-main
+    image: mysql:8
+    hostname: mysql-main
+    restart: always
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --server-id=100
+    ports:
+      - "3306:3306"
+    volumes:
+      - /share/Container/mysql/main:/var/lib/mysql
+      - /share/Container/mysql/conf/main:/etc/mysql/conf.d:ro
+    environment:
+      - MYSQL_ROOT_PASSWORD=wZ6try8MCNGi6n8P  # 随机密码（可按需修改）
+    networks:
+      - qnap-apps
+
+  mysql-replica:
+    container_name: qnap-mysql-replica
+    image: mysql:8
+    hostname: mysql-replica
+    restart: always
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --server-id=101
+    ports:
+      - "3307:3306"
+    volumes:
+      - /share/Container/mysql/replica:/var/lib/mysql
+      - /share/Container/mysql/conf/replica:/etc/mysql/conf.d:ro
+    environment:
+      - MYSQL_ROOT_PASSWORD=wZ6try8MCNGi6n8P  # 随机密码（可按需修改）
+    networks:
+      - qnap-apps
