@@ -24,6 +24,29 @@ services:
     networks:
       - qnap-apps
 
+  piwigo:  # Photo Gallery
+    image: lscr.io/linuxserver/piwigo:latest
+    container_name: qnap-piwigo
+    hostname: piwigo
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai
+      - LANG=en_US.UTF-8
+      - PUID=1000
+      - PGID=1000
+    volumes:  # Should be changed !!!
+      - /share/Container/piwigo/config:/config
+      - /share/Container/piwigo/gallery:/gallery
+      - /share/Backup/Gallery:/gallery/galleries
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "9085:80"
+    depends_on:
+      - mysql-main
+    networks:
+      - qnap-apps
+
   gitea:
     image: gitea/gitea:1.17.3
     container_name: qnap-gitea
