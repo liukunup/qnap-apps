@@ -86,7 +86,7 @@ services:
     volumes:  # Should be changed !!!
       - /share/Container/piwigo/config:/config
       - /share/Container/piwigo/gallery:/gallery
-      - /share/Backup/Gallery:/gallery/galleries
+      - /share/Cloud/Gallery:/gallery/galleries
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     ports:
