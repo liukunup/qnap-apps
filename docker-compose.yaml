@@ -76,3 +76,126 @@ services:
       - MYSQL_ROOT_PASSWORD=wZ6try8MCNGi6n8P  # 随机密码（可按需修改）
     networks:
       - qnap-apps
+
+# ------------------------------------------------------- Redis -------------------------------------------------------
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: qnap-redis-commander
+    hostname: redis-commander
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai
+      - LANG=en_US.UTF-8
+      - REDIS_HOSTS=master:redis-master:6379:0:kyUQ9xf7knPbYCQt,slave1:redis-slave-1:6379:0:kyUQ9xf7knPbYCQt,slave2:redis-slave-2:6379:0:kyUQ9xf7knPbYCQt
+    ports:
+      - "9081:8081"
+    depends_on:
+      - master
+      - slave1
+      - slave2
+      - sentinel1
+      - sentinel2
+      - sentinel3
+    networks:
+      - qnap-apps
+
+  master:
+    image: redis:6
+    container_name: qnap-redis-master
+    hostname: redis-master
+    restart: always
+    command: redis-server --requirepass kyUQ9xf7knPbYCQt --appendonly yes
+    environment:
+      - TZ=Asia/Shanghai
+      - LANG=en_US.UTF-8
+    volumes:
+      - /share/Container/redis/master:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - qnap-apps
+
+  slave1:
+    image: redis:6
+    container_name: qnap-redis-slave-1
+    hostname: redis-slave-1
+    restart: always
+    command: redis-server --replicaof redis-master 6379 --requirepass kyUQ9xf7knPbYCQt --masterauth kyUQ9xf7knPbYCQt --appendonly yes
+    environment:
+      - TZ=Asia/Shanghai
+      - LANG=en_US.UTF-8
+    volumes:
+      - /share/Container/redis/slave1:/data
+    ports:
+      - "6381:6379"
+    depends_on:
+      - master
+    networks:
+      - qnap-apps
+
+  slave2:
+    image: redis:6
+    container_name: qnap-redis-slave-2
+    hostname: redis-slave-2
+    restart: always
+    command: redis-server --replicaof redis-master 6379 --requirepass kyUQ9xf7knPbYCQt --masterauth kyUQ9xf7knPbYCQt --appendonly yes
+    environment:
+      - TZ=Asia/Shanghai
+      - LANG=en_US.UTF-8
+    volumes:
+      - /share/Container/redis/slave2:/data
+    ports:
+      - "6382:6379"
+    depends_on:
+      - master
+    networks:
+      - qnap-apps
+
+  sentinel1:
+    image: redis:6
+    container_name: qnap-redis-sentinel-1
+    hostname: redis-sentinel-1
+    restart: always
+    command: ["redis-sentinel", "/usr/local/etc/redis/redis-sentinel.conf"]
+    environment:
+      - TZ=Asia/Shanghai
+      - LANG=en_US.UTF-8
+    volumes:
+      - /share/Container/redis/redis-sentinel-1.conf:/usr/local/etc/redis/redis-sentinel.conf
+    depends_on:
+      - master
+    networks:
+      - qnap-apps
+
+  sentinel2:
+    image: redis:6
+    container_name: qnap-redis-sentinel-2
+    hostname: redis-sentinel-2
+    restart: always
+    command: ["redis-sentinel", "/usr/local/etc/redis/redis-sentinel.conf"]
+    environment:
+      - TZ=Asia/Shanghai
+      - LANG=en_US.UTF-8
+    volumes:
+      - /share/Container/redis/redis-sentinel-2.conf:/usr/local/etc/redis/redis-sentinel.conf
+    depends_on:
+      - slave1
+    networks:
+      - qnap-apps
+
+  sentinel3:
+    image: redis:6
+    container_name: qnap-redis-sentinel-3
+    hostname: redis-sentinel-3
+    restart: always
+    command: ["redis-sentinel", "/usr/local/etc/redis/redis-sentinel.conf"]
+    environment:
+      - TZ=Asia/Shanghai
+      - LANG=en_US.UTF-8
+    volumes:
+      - /share/Container/redis/redis-sentinel-3.conf:/usr/local/etc/redis/redis-sentinel.conf
+    depends_on:
+      - slave2
+    networks:
+      - qnap-apps
