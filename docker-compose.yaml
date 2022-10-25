@@ -40,7 +40,7 @@ services:
       - /share/Container/nextcloud/config:/var/www/html/config
       - /share/Container/nextcloud/data:/var/www/html/data
       - /share/Container/nextcloud/theme:/var/www/html/themes/custom
-      - /share/Backup:/media/qnap
+      - /share/Cloud:/media/qnap
     ports:
       - "9086:80"  # HTTP
     links:
