@@ -24,6 +24,32 @@ services:
     networks:
       - qnap-apps
 
+  nextcloud:  # Private Cloud Disk
+    image: nextcloud:24-apache
+    container_name: qnap-nextcloud
+    hostname: nextcloud
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai
+      - LANG=en_US.UTF-8
+      - USER_UID=1000
+      - USER_GID=1000
+    volumes:  # Should be changed !!!
+      - /share/Container/nextcloud/nextcloud:/var/www/html
+      - /share/Container/nextcloud/apps:/var/www/html/custom_apps
+      - /share/Container/nextcloud/config:/var/www/html/config
+      - /share/Container/nextcloud/data:/var/www/html/data
+      - /share/Container/nextcloud/theme:/var/www/html/themes/custom
+      - /share/Backup:/media/qnap
+    ports:
+      - "9086:80"  # HTTP
+    links:
+      - mysql-main
+    depends_on:
+      - mysql-main
+    networks:
+      - qnap-apps
+
   jellyfin:  # Free Software Media System
     image: lscr.io/linuxserver/jellyfin:latest
     container_name: qnap-jellyfin
