@@ -60,16 +60,16 @@ services:
       - LANG=en_US.UTF-8
       - PUID=1000
       - PGID=1000
-      - JELLYFIN_PublishedServerUrl=qnap.liukun.com
+      - JELLYFIN_PublishedServerUrl=qnap.liukun.com  # Should be changed !!!
     volumes:  # Should be changed !!!
       - /share/Container/jellyfin/library:/config
       - /share/Container/jellyfin/tvseries:/data/tvshows
       - /share/Public/Media:/data/movies
     ports:
-      - "8096:8096"
-      - "8920:8920"
-      - "7359:7359/udp"
-      - "1900:1900/udp"
+      - "8096:8096"  # HTTP
+      - "8920:8920"  # HTTPS
+      - "7359:7359/udp"  # Client Discovery
+      - "1900:1900/udp"  # Service Discovery
     networks:
       - qnap-apps
 
@@ -129,8 +129,8 @@ services:
     environment:
       - TZ=Asia/Shanghai
       - LANG=en_US.UTF-8
-      - MINIO_ROOT_USER=LehXBoVThyyDU3vZ
-      - MINIO_ROOT_PASSWORD=Ggi057AOL8ZRrvxv
+      - MINIO_ROOT_USER=LehXBoVThyyDU3vZ  # 随机账号（可按需修改）
+      - MINIO_ROOT_PASSWORD=Ggi057AOL8ZRrvxv  # 随机密码（可按需修改）
     volumes:  # Should be changed !!!
       - /share/Container/minio:/data
       - /etc/timezone:/etc/timezone:ro
@@ -151,7 +151,7 @@ services:
     environment:
       - TZ=Asia/Shanghai
       - LANG=en_US.UTF-8
-      - ENV_DOCKER_REGISTRY_HOST=qnap.liukun.com
+      - ENV_DOCKER_REGISTRY_HOST=qnap.liukun.com  # Should be changed !!!
       - ENV_DOCKER_REGISTRY_PORT=5000
     ports:
       - "9082:80"
@@ -201,7 +201,7 @@ services:
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --server-id=100
     ports:
       - "3306:3306"
-    volumes:
+    volumes:  # Should be changed !!!
       - /share/Container/mysql/main:/var/lib/mysql
       - /share/Container/mysql/conf/main:/etc/mysql/conf.d:ro
     environment:
@@ -217,7 +217,7 @@ services:
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --server-id=101
     ports:
       - "3307:3306"
-    volumes:
+    volumes:  # Should be changed !!!
       - /share/Container/mysql/replica:/var/lib/mysql
       - /share/Container/mysql/conf/replica:/etc/mysql/conf.d:ro
     environment:
@@ -235,7 +235,7 @@ services:
     environment:
       - TZ=Asia/Shanghai
       - LANG=en_US.UTF-8
-      - REDIS_HOSTS=master:master:6379:0:kyUQ9xf7knPbYCQt,slave1:slave1:6379:0:kyUQ9xf7knPbYCQt,slave2:slave2:6379:0:kyUQ9xf7knPbYCQt
+      - REDIS_HOSTS=master:master:6379:0:kyUQ9xf7knPbYCQt,slave1:slave1:6379:0:kyUQ9xf7knPbYCQt,slave2:slave2:6379:0:kyUQ9xf7knPbYCQt  # 密码参考master配置
     ports:
       - "9081:8081"
     depends_on:
@@ -253,11 +253,11 @@ services:
     container_name: qnap-redis-master
     hostname: redis-master
     restart: always
-    command: redis-server --requirepass kyUQ9xf7knPbYCQt --appendonly yes
+    command: redis-server --requirepass kyUQ9xf7knPbYCQt --appendonly yes  # 随机密码（可按需修改）
     environment:
       - TZ=Asia/Shanghai
       - LANG=en_US.UTF-8
-    volumes:
+    volumes:  # Should be changed !!!
       - /share/Container/redis/master:/data
     ports:
       - "6379:6379"
@@ -269,11 +269,11 @@ services:
     container_name: qnap-redis-slave-1
     hostname: redis-slave-1
     restart: always
-    command: redis-server --replicaof master 6379 --requirepass kyUQ9xf7knPbYCQt --masterauth kyUQ9xf7knPbYCQt --appendonly yes
+    command: redis-server --replicaof master 6379 --requirepass kyUQ9xf7knPbYCQt --masterauth kyUQ9xf7knPbYCQt --appendonly yes  # 密码参考master配置
     environment:
       - TZ=Asia/Shanghai
       - LANG=en_US.UTF-8
-    volumes:
+    volumes:  # Should be changed !!!
       - /share/Container/redis/slave1:/data
     ports:
       - "6381:6379"
@@ -287,11 +287,11 @@ services:
     container_name: qnap-redis-slave-2
     hostname: redis-slave-2
     restart: always
-    command: redis-server --replicaof master 6379 --requirepass kyUQ9xf7knPbYCQt --masterauth kyUQ9xf7knPbYCQt --appendonly yes
+    command: redis-server --replicaof master 6379 --requirepass kyUQ9xf7knPbYCQt --masterauth kyUQ9xf7knPbYCQt --appendonly yes  # 密码参考master配置
     environment:
       - TZ=Asia/Shanghai
       - LANG=en_US.UTF-8
-    volumes:
+    volumes:  # Should be changed !!!
       - /share/Container/redis/slave2:/data
     ports:
       - "6382:6379"
@@ -309,7 +309,7 @@ services:
     environment:
       - TZ=Asia/Shanghai
       - LANG=en_US.UTF-8
-    volumes:
+    volumes:  # Should be changed !!!
       - /share/Container/redis/redis-sentinel-1.conf:/usr/local/etc/redis/redis-sentinel.conf
     depends_on:
       - master
@@ -325,7 +325,7 @@ services:
     environment:
       - TZ=Asia/Shanghai
       - LANG=en_US.UTF-8
-    volumes:
+    volumes:  # Should be changed !!!
       - /share/Container/redis/redis-sentinel-2.conf:/usr/local/etc/redis/redis-sentinel.conf
     depends_on:
       - slave1
@@ -341,7 +341,7 @@ services:
     environment:
       - TZ=Asia/Shanghai
       - LANG=en_US.UTF-8
-    volumes:
+    volumes:  # Should be changed !!!
       - /share/Container/redis/redis-sentinel-3.conf:/usr/local/etc/redis/redis-sentinel.conf
     depends_on:
       - slave2
