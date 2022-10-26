@@ -51,7 +51,7 @@ services:
       - qnap-apps
 
   jellyfin:  # Free Software Media System
-    image: lscr.io/linuxserver/jellyfin:latest
+    image: lscr.io/linuxserver/jellyfin:10.8.5
     container_name: qnap-jellyfin
     hostname: jellyfin
     restart: always
