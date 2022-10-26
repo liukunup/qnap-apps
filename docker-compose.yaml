@@ -118,6 +118,17 @@ services:
     networks:
       - qnap-apps
 
+  drawio:
+    image: jgraph/drawio:20.5.0
+    container_name: qnap-drawio
+    hostname: drawio
+    restart: always
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+    networks:
+      - qnap-apps
+
 # ------------------------------------------------------- Minio -------------------------------------------------------
 
   minio:

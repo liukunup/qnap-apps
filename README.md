@@ -144,6 +144,16 @@ STOP REPLICA;
 | HTTP  | 3000 |  9084   |
 |  SSH  |  22  |  10022  |
 
+### [Draw.io](https://hub.docker.com/r/jgraph/drawio)
+
+[Go to Web App in LAN](http://qnap.liukun.com:8080)
+
+| Usage | Port | Mapping |
+|:-----:|:----:|:-------:|
+| HTTP  | 8080 |  8080   |
+| HTTPS | 8443 |  8443   |
+
+
 ### [Minio](https://hub.docker.com/r/minio/minio)
 
 [Go to Web Console in LAN](http://qnap.liukun.com:9001)
@@ -217,6 +227,10 @@ code .shuttle.json
     {
       "name": "Gitea",
       "cmd": "http://qnap.liukun.com:9084"
+    }, 
+    {
+      "name": "Draw.io",
+      "cmd": "http://qnap.liukun.com:8080"
     },
     {
       "name": "Minio",
