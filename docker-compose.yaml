@@ -74,7 +74,7 @@ services:
       - qnap-apps
 
   piwigo:  # Photo Gallery
-    image: lscr.io/linuxserver/piwigo:latest
+    image: lscr.io/linuxserver/piwigo:13.1.0
     container_name: qnap-piwigo
     hostname: piwigo
     restart: always
