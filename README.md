@@ -108,6 +108,8 @@ STOP REPLICA;
 |    HTTP    | 9000 |  9000   |
 |   HTTPS    | 9443 |  9433   |
 
+### [HSK](https://hub.docker.com/r/liukunup/phddns)
+
 ### [Nextcloud](https://hub.docker.com/_/nextcloud)
 
 [Go to Web App in LAN](http://qnap.liukun.com:9086)
