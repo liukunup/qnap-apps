@@ -24,6 +24,21 @@ services:
     networks:
       - qnap-apps
 
+  phddns:
+    image: liukunup/phddns:5.2.0
+    container_name: phddns
+    hostname: phddns
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai
+      - LANG=en_US.UTF-8
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    mac_address: 'ec:5f:d8:47:f9:dc'  # 随机填写（务必修改）
+    networks:
+      - qnap-apps
+
   nextcloud:  # Private Cloud Disk
     image: nextcloud:24-apache
     container_name: qnap-nextcloud
