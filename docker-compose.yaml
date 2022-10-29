@@ -168,7 +168,7 @@ services:
       - /share/Container/jumpserver/lion/data:/opt/lion/data
     ports:
       - "9087:80"
-      - "12222:2222"
+      - "2222:2222"
       - "40000-40100:30000-30100"
     depends_on:
       - mysql-main

@@ -162,7 +162,7 @@ STOP REPLICA;
 | Usage  |    Port     |   Mapping   |
 |:------:|:-----------:|:-----------:|
 |  HTTP  |     80      |    9087     |
-|  SSH   |    2222     |    12222    |
+|  SSH   |    2222     |    2222     |
 | MAGNUS | 30000-30100 | 40000-40100 |
 
 ### [Minio](https://hub.docker.com/r/minio/minio)
