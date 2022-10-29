@@ -155,6 +155,15 @@ STOP REPLICA;
 | HTTP  | 8080 |  8080   |
 | HTTPS | 8443 |  8443   |
 
+### [Jumpserver](https://www.jumpserver.org/)
+
+[Go to Web App in LAN](http://qnap.liukun.com:9087)
+
+| Usage  |    Port     |   Mapping   |
+|:------:|:-----------:|:-----------:|
+|  HTTP  |     80      |    9087     |
+|  SSH   |    2222     |    12222    |
+| MAGNUS | 30000-30100 | 30000-30100 |
 
 ### [Minio](https://hub.docker.com/r/minio/minio)
 
@@ -233,6 +242,10 @@ code .shuttle.json
     {
       "name": "Draw.io",
       "cmd": "http://qnap.liukun.com:8080"
+    }, 
+    {
+      "name": "Jumpserver",
+      "cmd": "http://qnap.liukun.com:9087"
     },
     {
       "name": "Minio",
