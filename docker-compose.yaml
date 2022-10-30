@@ -61,8 +61,6 @@ services:
       - /share/Container/nextcloud/data:/var/www/html/data
       - /share/Container/nextcloud/theme:/var/www/html/themes/custom
       - /share/Cloud:/media/qnap
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
     ports:
       - "9091:80"
     links:
