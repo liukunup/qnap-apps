@@ -1,4 +1,7 @@
 #!/bin/bash
+# AUTHOR: LiuKun <liukunup@outlook.com>
+# DATE:   2022-10-30
+# Check & Create folders
 
 # 待创建的路径列表
 folders=(
