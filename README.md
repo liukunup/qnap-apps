@@ -1,9 +1,11 @@
 # qnap-apps
 
-通过`docker compose`方式在`QNAP`NAS上快速部署我的应用程序。
+通过`docker compose`方式, 在我的`QNAP`NAS上快速部署我的应用程序。
 
 
 ## Install
+
+---
 
 > TL;DR
 
@@ -12,9 +14,276 @@
 git clone https://github.com/liukunup/qnap-apps.git
 # 切换到相应目录
 cd qnap-apps
+# 创建本地映射目录
+sh folder.sh
+# 修改配置参数
+vim .env
 # 一键拉起全部应用程序
 docker-compose up -d
 ```
+
+
+## Applications
+
+---
+
+> 端口映射原则: 尽量保持原端口不变; 未使用的端口尽量不对外暴露。
+
+<details open>
+    <summary> <strong> Portainer </strong> </summary>
+<p>
+
+可视化容器管理工具
+
+Open <a href="https://hub.docker.com/r/portainer/portainer-ce">Docker Hub</a>
+
+Go to <a href="http://qnap.liukun.com:9000">Web Console</a> in LAN
+
+|   Usage    | Port | Mapping |
+|:----------:|:----:|:-------:|
+| TCP Tunnel | 8000 |         |
+|    HTTP    | 9000 |  9000   |
+|   HTTPS    | 9443 |         |
+
+</p>
+</details>
+
+
+<details>
+    <summary> <strong> HSK </strong> </summary>
+<p>
+
+内网穿透
+
+Open <a href="https://hsk.oray.com/">花生壳官网</a>
+
+Open <a href="https://hub.docker.com/r/liukunup/phddns">Docker Hub</a>
+
+Open <a href="https://github.com/liukunup/phddns">GitHub</a>
+
+</p>
+</details>
+
+
+<details>
+    <summary> <strong> Nextcloud </strong> </summary>
+<p>
+
+私有化个人网盘
+
+Open <a href="https://hub.docker.com/_/nextcloud">Docker Hub</a>
+
+Go to <a href="http://qnap.liukun.com:9091">Web App</a> in LAN
+
+| Usage | Port | Mapping |
+|:-----:|:----:|:-------:|
+| HTTP  |  80  |  9091   |
+
+</p>
+</details>
+
+
+<details>
+    <summary> <strong> Jellyfin </strong> </summary>
+<p>
+
+多媒体服务器
+
+Open <a href="https://hub.docker.com/r/linuxserver/jellyfin">Docker Hub</a>
+
+Go to <a href="http://qnap.liukun.com:8096">Web App</a> in LAN
+
+|       Usage       |   Port   | Mapping |
+|:-----------------:|:--------:|:-------:|
+|       HTTP        |   8096   |  8096   |
+|       HTTPS       |   8920   |  8920   |
+| Client Discovery  | 7359/udp |  7359   |
+| Service Discovery | 1900/udp |  1900   |
+
+</p>
+</details>
+
+
+<details>
+    <summary> <strong> Piwigo </strong> </summary>
+<p>
+
+相册
+
+Open <a href="https://hub.docker.com/r/linuxserver/piwigo">Docker Hub</a>
+
+Go to <a href="http://qnap.liukun.com:9092">Web App</a> in LAN
+
+| Usage | Port | Mapping |
+|:-----:|:----:|:-------:|
+| HTTP  |  80  |  9092   |
+
+</p>
+</details>
+
+
+<details>
+    <summary> <strong> Draw.io </strong> </summary>
+<p>
+
+流程图绘制工具
+
+Open <a href="https://hub.docker.com/r/jgraph/drawio">Docker Hub</a>
+
+Go to <a href="http://qnap.liukun.com:8080">Web App</a> in LAN
+
+| Usage | Port | Mapping |
+|:-----:|:----:|:-------:|
+| HTTP  | 8080 |  8080   |
+
+</p>
+</details>
+
+
+<details>
+    <summary> <strong> Gitea </strong> </summary>
+<p>
+
+代码托管平台
+
+Open <a href="https://hub.docker.com/r/gitea/gitea">Docker Hub</a>
+
+Go to <a href="http://qnap.liukun.com:3001">Web App</a> in LAN
+
+| Usage | Port | Mapping |
+|:-----:|:----:|:-------:|
+| HTTP  | 3000 |  3001   |
+|  SSH  |  22  |   222   |
+
+</p>
+</details>
+
+
+<details>
+    <summary> <strong> Grafana </strong> </summary>
+<p>
+
+数据看板
+
+Open <a href="https://hub.docker.com/u/grafana">Docker Hub</a>
+
+Go to <a href="http://qnap.liukun.com:3000">Web App</a> in LAN
+
+| Usage | Port | Mapping |
+|:-----:|:----:|:-------:|
+| HTTP  | 3000 |  3000   |
+
+</p>
+</details>
+
+
+<details>
+    <summary> <strong> Code Server </strong> </summary>
+<p>
+
+在线编辑器
+
+Open <a href="https://registry.hub.docker.com/r/linuxserver/code-server">Docker Hub</a>
+
+Go to <a href="http://qnap.liukun.com:8443">Web App</a> in LAN
+
+| Usage | Port | Mapping |
+|:-----:|:----:|:-------:|
+| HTTP  | 8443 |  8443   |
+
+</p>
+</details>
+
+
+<details>
+    <summary> <strong> Jupyter / minimal-notebook </strong> </summary>
+<p>
+
+在线编辑器
+
+Open <a href="https://hub.docker.com/u/jupyter">Docker Hub</a>
+
+Go to <a href="http://qnap.liukun.com:8888">Web App</a> in LAN
+
+| Usage | Port | Mapping |
+|:-----:|:----:|:-------:|
+| HTTP  | 8888 |  8888   |
+
+</p>
+</details>
+
+
+<details>
+    <summary> <strong> Jumpserver </strong> </summary>
+<p>
+
+堡垒机
+
+Open <a href="https://www.jumpserver.org/">Docker Hub</a>
+
+Go to <a href="http://qnap.liukun.com:9093">Web App</a> in LAN
+
+| Usage  |    Port     |   Mapping   |
+|:------:|:-----------:|:-----------:|
+|  HTTP  |     80      |    9093     |
+|  SSH   |    2222     |    2222     |
+| MAGNUS | 30000-30100 | 40000-40100 |
+
+</p>
+</details>
+
+
+<details>
+    <summary> <strong> Minio </strong> </summary>
+<p>
+
+对象存储
+
+Open <a href="https://hub.docker.com/r/minio/minio">Docker Hub</a>
+
+Go to <a href="http://qnap.liukun.com:9002">Web App</a> in LAN
+
+|  Usage  | Port | Mapping |
+|:-------:|:----:|:-------:|
+|  HTTP   | 9000 |  9002   |
+| Console | 9001 |  9001   |
+
+</p>
+</details>
+
+
+<details>
+    <summary> <strong> Registry </strong> </summary>
+<p>
+
+镜像仓库
+
+Open <a href="https://hub.docker.com/_/registry">Docker Hub</a>
+
+Go to <a href="http://qnap.liukun.com:9094">Web App</a> in LAN
+
+| Application    | Usage  | Port | Mapping |
+|:---------------|:------:|:----:|:-------:|
+| Registry       | Server | 5000 |  5000   |
+| _Registry Web_ |  HTTP  |  80  |  9094   |
+
+</p>
+</details>
+
+
+<details>
+    <summary> <strong> MySQL </strong> </summary>
+<p>
+
+Open <a href="https://hub.docker.com/_/mysql">Docker Hub</a>
+
+Go to <a href="http://qnap.liukun.com:9080">phpMyAdmin</a> in LAN
+
+| Application  |  Usage  | Port | Mapping |
+|:-------------|:-------:|:----:|:-------:|
+| MySQL        |  Main   | 3306 |  3306   |
+|              | Replica | 3306 |  3307   |
+| _phpMyAdmin_ |  HTTP   |  80  |  9080   |
 
 ### 数据库主从备份设置
 
@@ -93,132 +362,17 @@ SHOW REPLICA STATUS;
 STOP REPLICA;
 ```
 
+</p>
+</details>
 
-## 应用程序清单
 
-> 端口映射原则: 尽量保持原端口不变
+<details>
+    <summary> <strong> Redis </strong> </summary>
+<p>
 
-### [Portainer](https://hub.docker.com/r/portainer/portainer-ce)
+Open <a href="https://hub.docker.com/_/redis">Docker Hub</a>
 
-[Go to Web Console in LAN](http://qnap.liukun.com:9000)
-
-|   Usage    | Port | Mapping |
-|:----------:|:----:|:-------:|
-| TCP Tunnel | 8000 |  8000   |
-|    HTTP    | 9000 |  9000   |
-|   HTTPS    | 9443 |  9433   |
-
-### [HSK](https://hub.docker.com/r/liukunup/phddns)
-
-### [Nextcloud](https://hub.docker.com/_/nextcloud)
-
-[Go to Web App in LAN](http://qnap.liukun.com:9086)
-
-| Usage | Port | Mapping |
-|:-----:|:----:|:-------:|
-| HTTP  |  80  |  9086   |
-
-### [Jellyfin](https://hub.docker.com/r/linuxserver/jellyfin)
-
-[Go to Web App in LAN](http://qnap.liukun.com:8096)
-
-|       Usage       |   Port   | Mapping |
-|:-----------------:|:--------:|:-------:|
-|       HTTP        |   8096   |  8096   |
-|       HTTPS       |   8920   |  8920   |
-| Client Discovery  | 7359/udp |  7359   |
-| Service Discovery | 1900/udp |  1900   |
-
-### [Piwigo](https://hub.docker.com/r/linuxserver/piwigo)
-
-[Go to Web App in LAN](http://qnap.liukun.com:9085)
-
-| Usage | Port | Mapping |
-|:-----:|:----:|:-------:|
-| HTTP  |  80  |  9085   |
-
-### [Gitea](https://hub.docker.com/r/gitea/gitea)
-
-[Go to Web App in LAN](http://qnap.liukun.com:9084)
-
-| Usage | Port | Mapping |
-|:-----:|:----:|:-------:|
-| HTTP  | 3000 |  9084   |
-|  SSH  |  22  |  10022  |
-
-### [Draw.io](https://hub.docker.com/r/jgraph/drawio)
-
-[Go to Web App in LAN](http://qnap.liukun.com:8080)
-
-| Usage | Port | Mapping |
-|:-----:|:----:|:-------:|
-| HTTP  | 8080 |  8080   |
-
-### [Grafana](https://hub.docker.com/u/grafana)
-
-[Go to Web App in LAN](http://qnap.liukun.com:8080)
-
-| Usage | Port | Mapping |
-|:-----:|:----:|:-------:|
-| HTTP  | 3000 |  9088   |
-
-### [Code Server](https://registry.hub.docker.com/r/linuxserver/code-server)
-
-[Go to Web App in LAN](http://qnap.liukun.com:8080)
-
-| Usage | Port | Mapping |
-|:-----:|:----:|:-------:|
-| HTTP  | 8443 |  8443   |
-
-### [Jupyter / minimal-notebook](https://hub.docker.com/u/jupyter)
-
-[Go to Web App in LAN](http://qnap.liukun.com:8080)
-
-| Usage | Port | Mapping |
-|:-----:|:----:|:-------:|
-| HTTP  | 8888 |  8888   |
-
-### [Jumpserver](https://www.jumpserver.org/)
-
-[Go to Web App in LAN](http://qnap.liukun.com:9087)
-
-| Usage  |    Port     |   Mapping   |
-|:------:|:-----------:|:-----------:|
-|  HTTP  |     80      |    9087     |
-|  SSH   |    2222     |    2222     |
-| MAGNUS | 30000-30100 | 40000-40100 |
-
-### [Minio](https://hub.docker.com/r/minio/minio)
-
-[Go to Web Console in LAN](http://qnap.liukun.com:9001)
-
-|  Usage  | Port | Mapping |
-|:-------:|:----:|:-------:|
-|  HTTP   | 9000 |  9083   |
-| Console | 9001 |  9001   |
-
-### [Registry](https://hub.docker.com/_/registry)
-
-Go to [Registry Web](http://qnap.liukun.com:9082) in LAN
-
-| Application    | Usage  | Port | Mapping |
-|:---------------|:------:|:----:|:-------:|
-| Registry       | Server | 5000 |  5000   |
-| _Registry Web_ |  HTTP  |  80  |  9082   |
-
-### [MySQL](https://hub.docker.com/_/mysql)
-
-Go to [phpMyAdmin](http://qnap.liukun.com:9080) in LAN
-
-| Application  |  Usage  | Port | Mapping |
-|:-------------|:-------:|:----:|:-------:|
-| MySQL        |  Main   | 3306 |  3306   |
-|              | Replica | 3306 |  3307   |
-| _phpMyAdmin_ |  HTTP   |  80  |  9080   |
-
-### [Redis](https://hub.docker.com/_/redis)
-
-Go to [Redis Commander](http://qnap.liukun.com:9081) in LAN
+Go to <a href="http://qnap.liukun.com:9080">Redis Commander</a> in LAN
 
 | Application       | Usage   | Port | Mapping |
 |:------------------|---------|:----:|:-------:|
@@ -227,64 +381,68 @@ Go to [Redis Commander](http://qnap.liukun.com:9081) in LAN
 |                   | Slave 2 | 6379 |  6382   |
 | _Redis Commander_ | HTTP    | 8081 |  9081   |
 
+</p>
+</details>
 
-## Shuttle 配置清单
 
-打开`.shuttle.json`文件，加入以下配置，可以更方便的使用哦～
+## Shuttle
+
+> 通过`Shuttle`应用来打开页面，避免忘记端口带来的尴尬～
+
+选择您喜欢的方式来编辑`.shuttle.json`文件。
+
+- Vim
 
 ```shell
 # 使用 Vim 编辑
 vim .shuttle.json
+```
+
+- VsCode
+
+```shell
 # 使用 VsCode 编辑
 code .shuttle.json
 ```
 
+<details>
+    <summary> <strong> .shuttle.json </strong> </summary>
+<p>
+
 ```json
 {
-  "QNAP NAS Apps": [
+  "QNAP Apps": [
     {
-      "name": "Portainer",
-      "cmd": "http://qnap.liukun.com:9000"
-    },
-    {
-      "name": "Nextcloud",
-      "cmd": "http://qnap.liukun.com:9086"
-    },
-    {
-      "name": "Jellyfin",
-      "cmd": "http://qnap.liukun.com:8096"
-    },
-    {
-      "name": "Piwigo",
-      "cmd": "http://qnap.liukun.com:9085"
-    },
+      "name": "Grafana",
+      "cmd": "http://qnap.liukun.com:3000"
+    }, 
     {
       "name": "Gitea",
-      "cmd": "http://qnap.liukun.com:9084"
-    }, 
+      "cmd": "http://qnap.liukun.com:3001"
+    },
     {
       "name": "Draw.io",
       "cmd": "http://qnap.liukun.com:8080"
     }, 
     {
-      "name": "Grafana",
-      "cmd": "http://qnap.liukun.com:9088"
-    }, 
+      "name": "Jellyfin",
+      "cmd": "http://qnap.liukun.com:8096"
+    },
     {
-      "name": "CodeServer",
+      "name": "Code Server",
       "cmd": "http://qnap.liukun.com:8443"
     }, 
     {
-      "name": "Jupyter - minimal-notebook",
+      "name": "Jupyter Notebook",
       "cmd": "http://qnap.liukun.com:8888"
     }, 
     {
-      "name": "Jumpserver",
-      "cmd": "http://qnap.liukun.com:9087"
+      "name": "Portainer",
+      "cmd": "http://qnap.liukun.com:9000"
     },
     {
       "name": "Minio",
-      "cmd": "http://qnap.liukun.com:9083"
+      "cmd": "http://qnap.liukun.com:9002"
     },
     {
       "name": "phpMyAdmin",
@@ -295,9 +453,24 @@ code .shuttle.json
       "cmd": "http://qnap.liukun.com:9081"
     },
     {
+      "name": "Nextcloud",
+      "cmd": "http://qnap.liukun.com:9091"
+    },
+    {
+      "name": "Piwigo",
+      "cmd": "http://qnap.liukun.com:9092"
+    },
+    {
+      "name": "Jumpserver",
+      "cmd": "http://qnap.liukun.com:9093"
+    },
+    {
       "name": "Registry",
-      "cmd": "http://qnap.liukun.com:9082"
+      "cmd": "http://qnap.liukun.com:9094"
     }
   ]
 }
 ```
+
+</p>
+</details>

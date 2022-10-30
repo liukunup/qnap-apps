@@ -6,7 +6,7 @@ networks:
 
 services:
 
-  portainer:  # Container Management UI
+  portainer:
     image: portainer/portainer-ce:2.15.1
     container_name: qnap-portainer
     hostname: portainer
@@ -15,12 +15,10 @@ services:
       - TZ=Asia/Shanghai
       - LANG=en_US.UTF-8
     volumes:
-      - /share/Container/portainer:/data  # Should be changed !!!
+      - /share/Container/portainer:/data
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
-      - "8000:8000"  # TCP Tunnel (Server)
-      - "9000:9000"  # HTTP
-      - "9443:9443"  # HTTPS
+      - "9000:9000"
     networks:
       - qnap-apps
 
@@ -35,11 +33,11 @@ services:
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
-    mac_address: 'ec:5f:d8:47:f9:dc'  # 随机填写（务必修改）
+    mac_address: ${HSK_MAC_ADDR:?error}
     networks:
       - qnap-apps
 
-  nextcloud:  # Private Cloud Disk
+  nextcloud:
     image: nextcloud:24-apache
     container_name: qnap-nextcloud
     hostname: nextcloud
@@ -49,15 +47,24 @@ services:
       - LANG=en_US.UTF-8
       - USER_UID=1000
       - USER_GID=1000
-    volumes:  # Should be changed !!!
+      - NEXTCLOUD_ADMIN_USER=${MY_USERNAME:?error}
+      - NEXTCLOUD_ADMIN_PASSWORD=${MY_PASSWORD:?error}
+      - NEXTCLOUD_TRUSTED_DOMAINS=${NAS_DOMAIN:?error}
+      - MYSQL_PASSWORD=${MYSQL_ROOT_PASSWORD:?error}
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=root
+      - MYSQL_HOST=mysql-main:3306
+    volumes:
       - /share/Container/nextcloud/nextcloud:/var/www/html
       - /share/Container/nextcloud/apps:/var/www/html/custom_apps
       - /share/Container/nextcloud/config:/var/www/html/config
       - /share/Container/nextcloud/data:/var/www/html/data
       - /share/Container/nextcloud/theme:/var/www/html/themes/custom
       - /share/Cloud:/media/qnap
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
     ports:
-      - "9086:80"  # HTTP
+      - "9091:80"
     links:
       - mysql-main
     depends_on:
@@ -65,7 +72,7 @@ services:
     networks:
       - qnap-apps
 
-  jellyfin:  # Free Software Media System
+  jellyfin:
     image: lscr.io/linuxserver/jellyfin:10.8.5
     container_name: qnap-jellyfin
     hostname: jellyfin
@@ -75,20 +82,20 @@ services:
       - LANG=en_US.UTF-8
       - PUID=1000
       - PGID=1000
-      - JELLYFIN_PublishedServerUrl=qnap.liukun.com  # Should be changed !!!
-    volumes:  # Should be changed !!!
+      - JELLYFIN_PublishedServerUrl=${NAS_DOMAIN:?error}
+    volumes:
       - /share/Container/jellyfin/library:/config
       - /share/Container/jellyfin/tvseries:/data/tvshows
       - /share/Public/Media:/data/movies
     ports:
-      - "8096:8096"  # HTTP
-      - "8920:8920"  # HTTPS
-      - "7359:7359/udp"  # Client Discovery
-      - "1900:1900/udp"  # Service Discovery
+      - "8096:8096"
+      - "8920:8920"
+      - "7359:7359/udp"
+      - "1900:1900/udp"
     networks:
       - qnap-apps
 
-  piwigo:  # Photo Gallery
+  piwigo:
     image: lscr.io/linuxserver/piwigo:13.1.0
     container_name: qnap-piwigo
     hostname: piwigo
@@ -98,36 +105,14 @@ services:
       - LANG=en_US.UTF-8
       - PUID=1000
       - PGID=1000
-    volumes:  # Should be changed !!!
+    volumes:
       - /share/Container/piwigo/config:/config
       - /share/Container/piwigo/gallery:/gallery
       - /share/Cloud/Gallery:/gallery/galleries
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     ports:
-      - "9085:80"
-    depends_on:
-      - mysql-main
-    networks:
-      - qnap-apps
-
-  gitea:
-    image: gitea/gitea:1.17.3
-    container_name: qnap-gitea
-    hostname: gitea
-    restart: always
-    environment:
-      - TZ=Asia/Shanghai
-      - LANG=en_US.UTF-8
-      - USER_UID=1000
-      - USER_GID=1000
-    volumes:  # Should be changed !!!
-      - /share/Container/gitea:/data
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
-    ports:
-      - "9084:3000"
-      - "10022:22"
+      - "9092:80"
     depends_on:
       - mysql-main
     networks:
@@ -143,6 +128,33 @@ services:
     networks:
       - qnap-apps
 
+  gitea:
+    image: gitea/gitea:1.17.3
+    container_name: qnap-gitea
+    hostname: gitea
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai
+      - LANG=en_US.UTF-8
+      - USER_UID=1000
+      - USER_GID=1000
+      - GITEA__database__DB_TYPE=mysql
+      - GITEA__database__HOST=mysql-main:3306
+      - GITEA__database__NAME=gitea
+      - GITEA__database__USER=gitea
+      - GITEA__database__PASSWD=${MYSQL_ROOT_PASSWORD:?error}
+    volumes:
+      - /share/Container/gitea:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "3001:3000"
+      - "222:22"
+    depends_on:
+      - mysql-main
+    networks:
+      - qnap-apps
+
   grafana:
     image: grafana/grafana:latest
     container_name: qnap-grafana
@@ -151,10 +163,14 @@ services:
     environment:
       - TZ=Asia/Shanghai
       - LANG=en_US.UTF-8
-    volumes:  # Should be changed !!!
+      - GF_SECURITY_ADMIN_USER=${MY_USERNAME:?error}
+      - GF_SECURITY_ADMIN_PASSWORD=${MY_PASSWORD:?error}
+    volumes:
       - /share/Container/grafana:/var/lib/grafana
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
     ports:
-      - "9088:3000"
+      - "3000:3000"
     user: root
     networks:
       - qnap-apps
@@ -169,9 +185,11 @@ services:
       - LANG=en_US.UTF-8
       - PUID=1000
       - PGID=1000
-      - PROXY_DOMAIN=qnap.liukun.com
+      - PASSWORD=${MY_PASSWORD:?error}
+      - SUDO_PASSWORD=${MY_PASSWORD:?error}
+      - PROXY_DOMAIN=${NAS_DOMAIN:?error}
       - DEFAULT_WORKSPACE=/config/workspace
-    volumes: # Should be changed !!!
+    volumes:
       - /share/Container/code-server/config:/config
     ports:
       - "8443:8443"
@@ -182,7 +200,7 @@ services:
     image: jupyter/minimal-notebook:notebook-6.5.1
     container_name: qnap-minimal-notebook
     hostname: minimal-notebook
-    command: start-notebook.sh --NotebookApp.password='sha1:a7c0702d28e9:8a8868c5d4ea33af70e04c634487402b3997f40c'
+    command: start-notebook.sh --NotebookApp.password=${JUPYTER_NOTEBOOK_PASSWORD:?error}
     restart: always
     environment:
       - TZ=Asia/Shanghai
@@ -191,7 +209,7 @@ services:
       - PGID=1000
       - JUPYTER_ENABLE_LAB=yes
       - GRANT_SUDO=yes
-    volumes: # Should be changed !!!
+    volumes:
       - /share/Container/minimal-notebook:/home/jovyan/work
     ports:
       - "8888:8888"
@@ -205,25 +223,27 @@ services:
     restart: always
     privileged: true
     environment:
-      - SECRET_KEY=kWQdmdCQKjaWlHYpPhkNQDkfaRulM6YnHctsHLlSPs8287o2kW
-      - BOOTSTRAP_TOKEN=KXOeyNgDeTdpeu9q
+      - SECRET_KEY=${JMS_SECRET_KEY:?error}
+      - BOOTSTRAP_TOKEN=${JMS_BOOTSTRAP_TOKEN:?error}
       - LOG_LEVEL=ERROR
-      - DB_HOST=qnap.liukun.com
+      - DB_HOST=mysql-main
       - DB_PORT=3306
       - DB_USER=jumpserver
-      - DB_PASSWORD=nu4x599Wq7u0Bn8EABh3J91G
+      - DB_PASSWORD=${JMS_DB_PASSWORD:?error}
       - DB_NAME=jumpserver
-      - REDIS_HOST=qnap.liukun.com
+      - REDIS_HOST=master
       - REDIS_PORT=6379
-      - REDIS_PASSWORD=kyUQ9xf7knPbYCQt
-    volumes: # Should be changed !!!
+      - REDIS_PASSWORD=${REDIS_PASSWORD:?error}
+      - MAGNUS_PORTS=40000-40100
+    volumes:
       - /share/Container/jumpserver/core/data:/opt/jumpserver/data
       - /share/Container/jumpserver/koko/data:/opt/koko/data
       - /share/Container/jumpserver/lion/data:/opt/lion/data
     ports:
-      - "9087:80"
+      - "9093:80"
       - "2222:2222"
-      - "40000-40100:30000-30100"
+      - "3389:3389"
+      - "40000-40100:40000-40100"
     depends_on:
       - mysql-main
       - master
@@ -241,14 +261,14 @@ services:
     environment:
       - TZ=Asia/Shanghai
       - LANG=en_US.UTF-8
-      - MINIO_ROOT_USER=LehXBoVThyyDU3vZ  # 随机账号（可按需修改）
-      - MINIO_ROOT_PASSWORD=Ggi057AOL8ZRrvxv  # 随机密码（可按需修改）
-    volumes:  # Should be changed !!!
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER:?error}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD:?error}
+    volumes:
       - /share/Container/minio:/data
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     ports:
-      - "9083:9000"
+      - "9002:9000"
       - "9001:9001"
     networks:
       - qnap-apps
@@ -263,10 +283,10 @@ services:
     environment:
       - TZ=Asia/Shanghai
       - LANG=en_US.UTF-8
-      - ENV_DOCKER_REGISTRY_HOST=qnap.liukun.com  # Should be changed !!!
+      - ENV_DOCKER_REGISTRY_HOST=${NAS_DOMAIN:?error}
       - ENV_DOCKER_REGISTRY_PORT=5000
     ports:
-      - "9082:80"
+      - "9094:80"
     depends_on:
       - registry-backend
     networks:
@@ -280,7 +300,7 @@ services:
     environment:
       - TZ=Asia/Shanghai
       - LANG=en_US.UTF-8
-    volumes:  # Should be changed !!!
+    volumes:
       - /share/Container/registry:/var/lib/registry
     ports:
       - "5000:5000"
@@ -313,11 +333,11 @@ services:
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --server-id=100
     ports:
       - "3306:3306"
-    volumes:  # Should be changed !!!
+    volumes:
       - /share/Container/mysql/main:/var/lib/mysql
       - /share/Container/mysql/conf/main:/etc/mysql/conf.d:ro
     environment:
-      - MYSQL_ROOT_PASSWORD=wZ6try8MCNGi6n8P  # 随机密码（可按需修改）
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:?error}
     networks:
       - qnap-apps
 
@@ -329,11 +349,11 @@ services:
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --server-id=101
     ports:
       - "3307:3306"
-    volumes:  # Should be changed !!!
+    volumes:
       - /share/Container/mysql/replica:/var/lib/mysql
       - /share/Container/mysql/conf/replica:/etc/mysql/conf.d:ro
     environment:
-      - MYSQL_ROOT_PASSWORD=wZ6try8MCNGi6n8P  # 随机密码（可按需修改）
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:?error}
     networks:
       - qnap-apps
 
@@ -347,7 +367,7 @@ services:
     environment:
       - TZ=Asia/Shanghai
       - LANG=en_US.UTF-8
-      - REDIS_HOSTS=master:master:6379:0:kyUQ9xf7knPbYCQt,slave1:slave1:6379:0:kyUQ9xf7knPbYCQt,slave2:slave2:6379:0:kyUQ9xf7knPbYCQt  # 密码参考master配置
+      - REDIS_HOSTS=master:master:6379:0:${REDIS_PASSWORD:?error},slave1:slave1:6379:0:${REDIS_PASSWORD:?error},slave2:slave2:6379:0:${REDIS_PASSWORD:?error}  # 密码参考master配置
     ports:
       - "9081:8081"
     depends_on:
@@ -365,11 +385,11 @@ services:
     container_name: qnap-redis-master
     hostname: redis-master
     restart: always
-    command: redis-server --requirepass kyUQ9xf7knPbYCQt --appendonly yes  # 随机密码（可按需修改）
+    command: redis-server --requirepass ${REDIS_PASSWORD:?error} --appendonly yes  # 随机密码（可按需修改）
     environment:
       - TZ=Asia/Shanghai
       - LANG=en_US.UTF-8
-    volumes:  # Should be changed !!!
+    volumes:
       - /share/Container/redis/master:/data
     ports:
       - "6379:6379"
@@ -381,11 +401,11 @@ services:
     container_name: qnap-redis-slave-1
     hostname: redis-slave-1
     restart: always
-    command: redis-server --replicaof master 6379 --requirepass kyUQ9xf7knPbYCQt --masterauth kyUQ9xf7knPbYCQt --appendonly yes  # 密码参考master配置
+    command: redis-server --replicaof master 6379 --requirepass ${REDIS_PASSWORD:?error} --masterauth ${REDIS_PASSWORD:?error} --appendonly yes  # 密码参考master配置
     environment:
       - TZ=Asia/Shanghai
       - LANG=en_US.UTF-8
-    volumes:  # Should be changed !!!
+    volumes:
       - /share/Container/redis/slave1:/data
     ports:
       - "6381:6379"
@@ -399,11 +419,11 @@ services:
     container_name: qnap-redis-slave-2
     hostname: redis-slave-2
     restart: always
-    command: redis-server --replicaof master 6379 --requirepass kyUQ9xf7knPbYCQt --masterauth kyUQ9xf7knPbYCQt --appendonly yes  # 密码参考master配置
+    command: redis-server --replicaof master 6379 --requirepass ${REDIS_PASSWORD:?error} --masterauth ${REDIS_PASSWORD:?error} --appendonly yes  # 密码参考master配置
     environment:
       - TZ=Asia/Shanghai
       - LANG=en_US.UTF-8
-    volumes:  # Should be changed !!!
+    volumes:
       - /share/Container/redis/slave2:/data
     ports:
       - "6382:6379"
@@ -421,7 +441,7 @@ services:
     environment:
       - TZ=Asia/Shanghai
       - LANG=en_US.UTF-8
-    volumes:  # Should be changed !!!
+    volumes:
       - /share/Container/redis/redis-sentinel-1.conf:/usr/local/etc/redis/redis-sentinel.conf
     depends_on:
       - master
@@ -437,7 +457,7 @@ services:
     environment:
       - TZ=Asia/Shanghai
       - LANG=en_US.UTF-8
-    volumes:  # Should be changed !!!
+    volumes:
       - /share/Container/redis/redis-sentinel-2.conf:/usr/local/etc/redis/redis-sentinel.conf
     depends_on:
       - slave1
@@ -453,7 +473,7 @@ services:
     environment:
       - TZ=Asia/Shanghai
       - LANG=en_US.UTF-8
-    volumes:  # Should be changed !!!
+    volumes:
       - /share/Container/redis/redis-sentinel-3.conf:/usr/local/etc/redis/redis-sentinel.conf
     depends_on:
       - slave2
