@@ -153,7 +153,30 @@ STOP REPLICA;
 | Usage | Port | Mapping |
 |:-----:|:----:|:-------:|
 | HTTP  | 8080 |  8080   |
-| HTTPS | 8443 |  8443   |
+
+### [Grafana](https://hub.docker.com/u/grafana)
+
+[Go to Web App in LAN](http://qnap.liukun.com:8080)
+
+| Usage | Port | Mapping |
+|:-----:|:----:|:-------:|
+| HTTP  | 3000 |  9088   |
+
+### [Code Server](https://registry.hub.docker.com/r/linuxserver/code-server)
+
+[Go to Web App in LAN](http://qnap.liukun.com:8080)
+
+| Usage | Port | Mapping |
+|:-----:|:----:|:-------:|
+| HTTP  | 8443 |  8443   |
+
+### [Jupyter / minimal-notebook](https://hub.docker.com/u/jupyter)
+
+[Go to Web App in LAN](http://qnap.liukun.com:8080)
+
+| Usage | Port | Mapping |
+|:-----:|:----:|:-------:|
+| HTTP  | 8888 |  8888   |
 
 ### [Jumpserver](https://www.jumpserver.org/)
 
@@ -242,6 +265,18 @@ code .shuttle.json
     {
       "name": "Draw.io",
       "cmd": "http://qnap.liukun.com:8080"
+    }, 
+    {
+      "name": "Grafana",
+      "cmd": "http://qnap.liukun.com:9088"
+    }, 
+    {
+      "name": "CodeServer",
+      "cmd": "http://qnap.liukun.com:8443"
+    }, 
+    {
+      "name": "Jupyter - minimal-notebook",
+      "cmd": "http://qnap.liukun.com:8888"
     }, 
     {
       "name": "Jumpserver",

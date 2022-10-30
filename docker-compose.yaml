@@ -140,7 +140,61 @@ services:
     restart: always
     ports:
       - "8080:8080"
+    networks:
+      - qnap-apps
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: qnap-grafana
+    hostname: grafana
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai
+      - LANG=en_US.UTF-8
+    volumes:  # Should be changed !!!
+      - /share/Container/grafana:/var/lib/grafana
+    ports:
+      - "9088:3000"
+    user: root
+    networks:
+      - qnap-apps
+
+  code-server:
+    image: lscr.io/linuxserver/code-server:latest
+    container_name: qnap-code-server
+    hostname: code-server
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai
+      - LANG=en_US.UTF-8
+      - PUID=1000
+      - PGID=1000
+      - PROXY_DOMAIN=qnap.liukun.com
+      - DEFAULT_WORKSPACE=/config/workspace
+    volumes: # Should be changed !!!
+      - /share/Container/code-server/config:/config
+    ports:
       - "8443:8443"
+    networks:
+      - qnap-apps
+
+  minimal-notebook:
+    image: jupyter/minimal-notebook:notebook-6.5.1
+    container_name: qnap-minimal-notebook
+    hostname: minimal-notebook
+    command: start-notebook.sh --NotebookApp.password='sha1:a7c0702d28e9:8a8868c5d4ea33af70e04c634487402b3997f40c'
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai
+      - LANG=en_US.UTF-8
+      - PUID=1000
+      - PGID=1000
+      - JUPYTER_ENABLE_LAB=yes
+      - GRANT_SUDO=yes
+    volumes: # Should be changed !!!
+      - /share/Container/minimal-notebook:/home/jovyan/work
+    ports:
+      - "8888:8888"
     networks:
       - qnap-apps
 
@@ -172,6 +226,7 @@ services:
       - "40000-40100:30000-30100"
     depends_on:
       - mysql-main
+      - master
     networks:
       - qnap-apps
 
