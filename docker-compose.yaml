@@ -62,7 +62,7 @@ services:
       - /share/Container/nextcloud/theme:/var/www/html/themes/custom
       - /share/Cloud:/media/qnap
     ports:
-      - "9091:80"
+      - "28080:80"
     links:
       - mysql-main
     depends_on:
@@ -110,7 +110,7 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     ports:
-      - "9092:80"
+      - "28081:80"
     depends_on:
       - mysql-main
     networks:
@@ -122,7 +122,7 @@ services:
     hostname: drawio
     restart: always
     ports:
-      - "8080:8080"
+      - "28091:8080"
     networks:
       - qnap-apps
 
@@ -146,7 +146,7 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     ports:
-      - "3001:3000"
+      - "23000:3000"
       - "222:22"
     depends_on:
       - mysql-main
@@ -168,7 +168,7 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     ports:
-      - "3000:3000"
+      - "24000:3000"
     user: root
     networks:
       - qnap-apps
@@ -190,7 +190,7 @@ services:
     volumes:
       - /share/Container/code-server/config:/config
     ports:
-      - "8443:8443"
+      - "28443:8443"
     networks:
       - qnap-apps
 
@@ -210,7 +210,7 @@ services:
     volumes:
       - /share/Container/minimal-notebook:/home/jovyan/work
     ports:
-      - "8888:8888"
+      - "28888:8888"
     networks:
       - qnap-apps
 
@@ -238,7 +238,7 @@ services:
       - /share/Container/jumpserver/koko/data:/opt/koko/data
       - /share/Container/jumpserver/lion/data:/opt/lion/data
     ports:
-      - "9093:80"
+      - "28090:80"
       - "2222:2222"
       - "3389:3389"
       - "40000-40100:40000-40100"
@@ -255,7 +255,7 @@ services:
     container_name: qnap-minio
     hostname: minio
     restart: always
-    command: server /data --address ":9000" --console-address ":9001"
+    command: server /data --address ":29000" --console-address ":29001"
     environment:
       - TZ=Asia/Shanghai
       - LANG=en_US.UTF-8
@@ -266,8 +266,8 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     ports:
-      - "9002:9000"
-      - "9001:9001"
+      - "29000:29000"
+      - "29001:29001"
     networks:
       - qnap-apps
 
@@ -284,7 +284,7 @@ services:
       - ENV_DOCKER_REGISTRY_HOST=${NAS_DOMAIN:?error}
       - ENV_DOCKER_REGISTRY_PORT=5000
     ports:
-      - "9094:80"
+      - "28092:80"
     depends_on:
       - registry-backend
     networks:

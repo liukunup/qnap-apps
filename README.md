@@ -77,7 +77,7 @@ Go to <a href="http://qnap.liukun.com:9091">Web App</a> in LAN
 
 | Usage | Port | Mapping |
 |:-----:|:----:|:-------:|
-| HTTP  |  80  |  9091   |
+| HTTP  |  80  |  28080  |
 
 </p>
 </details>
@@ -116,7 +116,7 @@ Go to <a href="http://qnap.liukun.com:9092">Web App</a> in LAN
 
 | Usage | Port | Mapping |
 |:-----:|:----:|:-------:|
-| HTTP  |  80  |  9092   |
+| HTTP  |  80  |  28081  |
 
 </p>
 </details>
@@ -134,7 +134,7 @@ Go to <a href="http://qnap.liukun.com:8080">Web App</a> in LAN
 
 | Usage | Port | Mapping |
 |:-----:|:----:|:-------:|
-| HTTP  | 8080 |  8080   |
+| HTTP  | 8080 |  28091  |
 
 </p>
 </details>
@@ -152,7 +152,7 @@ Go to <a href="http://qnap.liukun.com:3001">Web App</a> in LAN
 
 | Usage | Port | Mapping |
 |:-----:|:----:|:-------:|
-| HTTP  | 3000 |  3001   |
+| HTTP  | 3000 |  23000  |
 |  SSH  |  22  |   222   |
 
 </p>
@@ -171,7 +171,7 @@ Go to <a href="http://qnap.liukun.com:3000">Web App</a> in LAN
 
 | Usage | Port | Mapping |
 |:-----:|:----:|:-------:|
-| HTTP  | 3000 |  3000   |
+| HTTP  | 3000 |  24000  |
 
 </p>
 </details>
@@ -189,7 +189,7 @@ Go to <a href="http://qnap.liukun.com:8443">Web App</a> in LAN
 
 | Usage | Port | Mapping |
 |:-----:|:----:|:-------:|
-| HTTP  | 8443 |  8443   |
+| HTTP  | 8443 |  28443  |
 
 </p>
 </details>
@@ -207,7 +207,7 @@ Go to <a href="http://qnap.liukun.com:8888">Web App</a> in LAN
 
 | Usage | Port | Mapping |
 |:-----:|:----:|:-------:|
-| HTTP  | 8888 |  8888   |
+| HTTP  | 8888 |  28888  |
 
 </p>
 </details>
@@ -225,7 +225,7 @@ Go to <a href="http://qnap.liukun.com:9093">Web App</a> in LAN
 
 | Usage  |    Port     |   Mapping   |
 |:------:|:-----------:|:-----------:|
-|  HTTP  |     80      |    9093     |
+|  HTTP  |     80      |    28090    |
 |  SSH   |    2222     |    2222     |
 | MAGNUS | 30000-30100 | 40000-40100 |
 
@@ -245,8 +245,8 @@ Go to <a href="http://qnap.liukun.com:9002">Web App</a> in LAN
 
 |  Usage  | Port | Mapping |
 |:-------:|:----:|:-------:|
-|  HTTP   | 9000 |  9002   |
-| Console | 9001 |  9001   |
+|  HTTP   | 9000 |  29000  |
+| Console | 9001 |  29001  |
 
 </p>
 </details>
@@ -265,7 +265,7 @@ Go to <a href="http://qnap.liukun.com:9094">Web App</a> in LAN
 | Application    | Usage  | Port | Mapping |
 |:---------------|:------:|:----:|:-------:|
 | Registry       | Server | 5000 |  5000   |
-| _Registry Web_ |  HTTP  |  80  |  9094   |
+| _Registry Web_ |  HTTP  |  80  |  28092  |
 
 </p>
 </details>
@@ -413,36 +413,12 @@ code .shuttle.json
 {
   "QNAP Apps": [
     {
-      "name": "Grafana",
-      "cmd": "http://qnap.liukun.com:3000"
-    }, 
-    {
-      "name": "Gitea",
-      "cmd": "http://qnap.liukun.com:3001"
-    },
-    {
-      "name": "Draw.io",
-      "cmd": "http://qnap.liukun.com:8080"
-    }, 
-    {
       "name": "Jellyfin",
       "cmd": "http://qnap.liukun.com:8096"
     },
     {
-      "name": "Code Server",
-      "cmd": "http://qnap.liukun.com:8443"
-    }, 
-    {
-      "name": "Jupyter Notebook",
-      "cmd": "http://qnap.liukun.com:8888"
-    }, 
-    {
       "name": "Portainer",
       "cmd": "http://qnap.liukun.com:9000"
-    },
-    {
-      "name": "Minio",
-      "cmd": "http://qnap.liukun.com:9002"
     },
     {
       "name": "phpMyAdmin",
@@ -453,20 +429,44 @@ code .shuttle.json
       "cmd": "http://qnap.liukun.com:9081"
     },
     {
+      "name": "Gitea",
+      "cmd": "http://qnap.liukun.com:23000"
+    },
+    {
+      "name": "Grafana",
+      "cmd": "http://qnap.liukun.com:24000"
+    },
+    {
       "name": "Nextcloud",
-      "cmd": "http://qnap.liukun.com:9091"
+      "cmd": "http://qnap.liukun.com:28080"
     },
     {
       "name": "Piwigo",
-      "cmd": "http://qnap.liukun.com:9092"
+      "cmd": "http://qnap.liukun.com:28081"
     },
     {
       "name": "Jumpserver",
-      "cmd": "http://qnap.liukun.com:9093"
+      "cmd": "http://qnap.liukun.com:28090"
+    },
+    {
+      "name": "Draw.io",
+      "cmd": "http://qnap.liukun.com:28091"
     },
     {
       "name": "Registry",
-      "cmd": "http://qnap.liukun.com:9094"
+      "cmd": "http://qnap.liukun.com:28092"
+    },
+    {
+      "name": "Code Server",
+      "cmd": "http://qnap.liukun.com:28443"
+    }, 
+    {
+      "name": "Jupyter Notebook",
+      "cmd": "http://qnap.liukun.com:28888"
+    },
+    {
+      "name": "Minio",
+      "cmd": "http://qnap.liukun.com:29000"
     }
   ]
 }
