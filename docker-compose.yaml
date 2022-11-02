@@ -7,7 +7,7 @@ networks:
 services:
 
   portainer:
-    image: portainer/portainer-ce:2.15.1
+    image: portainer/portainer-ce:2.16.0
     container_name: qnap-portainer
     hostname: portainer
     restart: always
@@ -240,7 +240,6 @@ services:
     ports:
       - "28090:80"
       - "2222:2222"
-      - "3389:3389"
       - "40000-40100:40000-40100"
     depends_on:
       - mysql-main
