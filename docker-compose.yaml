@@ -84,35 +84,13 @@ services:
     volumes:
       - /share/Container/jellyfin/library:/config
       - /share/Container/jellyfin/tvseries:/data/tvshows
-      - /share/Public/Media:/data/movies
+      - /share/Container/jellyfin/movies:/data/movies
+      - /share/Cloud/Gallery:/data/gallery
     ports:
       - "8096:8096"
       - "8920:8920"
       - "7359:7359/udp"
       - "1900:1900/udp"
-    networks:
-      - qnap-apps
-
-  piwigo:
-    image: lscr.io/linuxserver/piwigo:13.1.0
-    container_name: qnap-piwigo
-    hostname: piwigo
-    restart: always
-    environment:
-      - TZ=Asia/Shanghai
-      - LANG=en_US.UTF-8
-      - PUID=1000
-      - PGID=1000
-    volumes:
-      - /share/Container/piwigo/config:/config
-      - /share/Container/piwigo/gallery:/gallery
-      - /share/Cloud/Gallery:/gallery/galleries
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
-    ports:
-      - "28081:80"
-    depends_on:
-      - mysql-main
     networks:
       - qnap-apps
 
@@ -153,67 +131,6 @@ services:
     networks:
       - qnap-apps
 
-  grafana:
-    image: grafana/grafana:latest
-    container_name: qnap-grafana
-    hostname: grafana
-    restart: always
-    environment:
-      - TZ=Asia/Shanghai
-      - LANG=en_US.UTF-8
-      - GF_SECURITY_ADMIN_USER=${MY_USERNAME:?error}
-      - GF_SECURITY_ADMIN_PASSWORD=${MY_PASSWORD:?error}
-    volumes:
-      - /share/Container/grafana:/var/lib/grafana
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
-    ports:
-      - "24000:3000"
-    user: root
-    networks:
-      - qnap-apps
-
-  code-server:
-    image: lscr.io/linuxserver/code-server:latest
-    container_name: qnap-code-server
-    hostname: code-server
-    restart: always
-    environment:
-      - TZ=Asia/Shanghai
-      - LANG=en_US.UTF-8
-      - PUID=1000
-      - PGID=1000
-      - PASSWORD=${MY_PASSWORD:?error}
-      - SUDO_PASSWORD=${MY_PASSWORD:?error}
-      - PROXY_DOMAIN=${NAS_DOMAIN:?error}
-      - DEFAULT_WORKSPACE=/config/workspace
-    volumes:
-      - /share/Container/code-server/config:/config
-    ports:
-      - "28443:8443"
-    networks:
-      - qnap-apps
-
-  minimal-notebook:
-    image: jupyter/minimal-notebook:notebook-6.5.1
-    container_name: qnap-minimal-notebook
-    hostname: minimal-notebook
-    command: start-notebook.sh --NotebookApp.password=${JUPYTER_NOTEBOOK_PASSWORD:?error}
-    restart: always
-    environment:
-      - TZ=Asia/Shanghai
-      - LANG=en_US.UTF-8
-      - PUID=1000
-      - PGID=1000
-      - JUPYTER_ENABLE_LAB=yes
-      - GRANT_SUDO=yes
-    volumes:
-      - /share/Container/minimal-notebook:/home/jovyan/work
-    ports:
-      - "28888:8888"
-    networks:
-      - qnap-apps
-
   jumpserver:
     image: jumpserver/jms_all:v2.27.0
     container_name: qnap-jms
@@ -232,7 +149,7 @@ services:
       - REDIS_HOST=master
       - REDIS_PORT=6379
       - REDIS_PASSWORD=${REDIS_PASSWORD:?error}
-      - MAGNUS_PORTS=40000-40100
+      - MAGNUS_PORTS=40000-40025
     volumes:
       - /share/Container/jumpserver/core/data:/opt/jumpserver/data
       - /share/Container/jumpserver/koko/data:/opt/koko/data

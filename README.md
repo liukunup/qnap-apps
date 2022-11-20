@@ -41,9 +41,7 @@ Go to <a href="http://qnap.liukun.com:9000">Web Console</a> in LAN
 
 |   Usage    | Port | Mapping |
 |:----------:|:----:|:-------:|
-| TCP Tunnel | 8000 |         |
 |    HTTP    | 9000 |  9000   |
-|   HTTPS    | 9443 |         |
 
 </p>
 </details>
@@ -105,24 +103,6 @@ Go to <a href="http://qnap.liukun.com:8096">Web App</a> in LAN
 
 
 <details>
-    <summary> <strong> Piwigo </strong> </summary>
-<p>
-
-相册
-
-Open <a href="https://hub.docker.com/r/linuxserver/piwigo">Docker Hub</a>
-
-Go to <a href="http://qnap.liukun.com:9092">Web App</a> in LAN
-
-| Usage | Port | Mapping |
-|:-----:|:----:|:-------:|
-| HTTP  |  80  |  28081  |
-
-</p>
-</details>
-
-
-<details>
     <summary> <strong> Draw.io </strong> </summary>
 <p>
 
@@ -154,60 +134,6 @@ Go to <a href="http://qnap.liukun.com:3001">Web App</a> in LAN
 |:-----:|:----:|:-------:|
 | HTTP  | 3000 |  23000  |
 |  SSH  |  22  |   222   |
-
-</p>
-</details>
-
-
-<details>
-    <summary> <strong> Grafana </strong> </summary>
-<p>
-
-数据看板
-
-Open <a href="https://hub.docker.com/u/grafana">Docker Hub</a>
-
-Go to <a href="http://qnap.liukun.com:3000">Web App</a> in LAN
-
-| Usage | Port | Mapping |
-|:-----:|:----:|:-------:|
-| HTTP  | 3000 |  24000  |
-
-</p>
-</details>
-
-
-<details>
-    <summary> <strong> Code Server </strong> </summary>
-<p>
-
-在线编辑器
-
-Open <a href="https://registry.hub.docker.com/r/linuxserver/code-server">Docker Hub</a>
-
-Go to <a href="http://qnap.liukun.com:8443">Web App</a> in LAN
-
-| Usage | Port | Mapping |
-|:-----:|:----:|:-------:|
-| HTTP  | 8443 |  28443  |
-
-</p>
-</details>
-
-
-<details>
-    <summary> <strong> Jupyter / minimal-notebook </strong> </summary>
-<p>
-
-在线编辑器
-
-Open <a href="https://hub.docker.com/u/jupyter">Docker Hub</a>
-
-Go to <a href="http://qnap.liukun.com:8888">Web App</a> in LAN
-
-| Usage | Port | Mapping |
-|:-----:|:----:|:-------:|
-| HTTP  | 8888 |  28888  |
 
 </p>
 </details>
@@ -433,16 +359,8 @@ code .shuttle.json
       "cmd": "http://qnap.liukun.com:23000"
     },
     {
-      "name": "Grafana",
-      "cmd": "http://qnap.liukun.com:24000"
-    },
-    {
       "name": "Nextcloud",
       "cmd": "http://qnap.liukun.com:28080"
-    },
-    {
-      "name": "Piwigo",
-      "cmd": "http://qnap.liukun.com:28081"
     },
     {
       "name": "Jumpserver",
@@ -455,14 +373,6 @@ code .shuttle.json
     {
       "name": "Registry",
       "cmd": "http://qnap.liukun.com:28092"
-    },
-    {
-      "name": "Code Server",
-      "cmd": "http://qnap.liukun.com:28443"
-    }, 
-    {
-      "name": "Jupyter Notebook",
-      "cmd": "http://qnap.liukun.com:28888"
     },
     {
       "name": "Minio",
